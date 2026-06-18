@@ -29,5 +29,5 @@ Ever spent three consecutive nights staring at a blank document trying to name a
 
 ### 1. Grab the Project Clone
 ```bash
-git clone [https://github.com/labsbyakash/brand-forge.git](https://github.com/labsbyakash/brand-forge.git)
+git clone https://github.com/labsbyakash/brand-forge.git
 cd brand-forge
