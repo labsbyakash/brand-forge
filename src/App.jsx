@@ -142,7 +142,7 @@ export default function App() {
             tS
           </span>
           <h1 className="text-xl font-black uppercase tracking-tighter">
-            Brand-Forge
+            BrandForge
           </h1>
         </div>
 
@@ -357,7 +357,7 @@ export default function App() {
           <div
             className={`pt-4 border-t border-dashed border-neutral-500/20 text-[10px] uppercase font-mono tracking-widest flex justify-between ${labelColor}`}
           >
-            <span>Made `Brand-Forge` with 💖</span>
+            <span>Made `BrandForge` with 💖</span>
             <span>© {new Date().getFullYear()}</span>
           </div>
         </section>
