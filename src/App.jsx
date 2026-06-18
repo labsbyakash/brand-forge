@@ -357,7 +357,17 @@ export default function App() {
           <div
             className={`pt-4 border-t border-dashed border-neutral-500/20 text-[10px] uppercase font-mono tracking-widest flex justify-between ${labelColor}`}
           >
-            <span>Made `BrandForge` with 💖</span>
+            <span>
+              Made `BrandForge` with 💖 by -{" "}
+              <a
+                href="https://devakashsharma.netlify.app/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:underline cursor-pointer"
+              >
+                Akash
+              </a>
+            </span>
             <span>© {new Date().getFullYear()}</span>
           </div>
         </section>
