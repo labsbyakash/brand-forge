@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 // Import the official Google Gen AI SDK
 import { GoogleGenAI } from "@google/genai";
 
+// These are the configuration presets for our user options
 const OPTIONS = {
   industry: ["Tech", "Healthcare", "Finance", "Gaming", "Education"],
   type: ["Startup", "App", "Website", "YouTube Channel", "Product"],
@@ -9,13 +10,16 @@ const OPTIONS = {
   language: ["English", "Hindi", "Spanish", "Japanese", "Greek", "Latin"],
 };
 
-// Initialize the Gemini Client using your environment variable
+// Hooking up the Gemini client using the environment key saved in your project setup
 const ai = new GoogleGenAI({
   apiKey: import.meta.env.VITE_GEMINI_API_KEY || "",
 });
 
 export default function App() {
+  // Theme control: Starts out dark by default
   const [theme, setTheme] = useState("dark");
+
+  // Storing what pills the user has actively selected
   const [formData, setFormData] = useState({
     industry: OPTIONS.industry[0],
     type: OPTIONS.type[0],
@@ -23,42 +27,49 @@ export default function App() {
     language: OPTIONS.language[0],
   });
 
+  // Setting up our text references, loading triggers, error blocks, and tracking states
   const keywordsRef = useRef(null);
   const [generatedNames, setGeneratedNames] = useState([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [copiedIndex, setCopiedIndex] = useState(null);
 
+  // Making sure our customized elegant typography font loads smoothly on component mount
   useEffect(() => {
     document.body.style.fontFamily = "'Outfit', sans-serif";
   }, []);
 
+  // When a user taps an option badge/pill, update that specific field inside our form data state
   const handlePillSelect = (name, value) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Flip-flops the design interface setup back and forth between light and dark modes
   const toggleTheme = () => {
     setTheme((prev) => (prev === "dark" ? "light" : "dark"));
   };
 
+  // Copies the generated name to the clipboard and handles showing a brief "Copied!" text alert
   const handleCopy = (name, index) => {
     navigator.clipboard.writeText(name);
     setCopiedIndex(index);
     setTimeout(() => {
-      setCopiedIndex(null);
+      setCopiedIndex(null); // Resets back to the normal copy text indicator after 1.5 seconds
     }, 1500);
   };
 
   // ASYNC FORGE: API Call handler
+  // The main core function that talks to Gemini when someone clicks the generate button
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsGenerating(true);
     setErrorMessage("");
     setGeneratedNames([]);
 
+    // Check if the user wrote any custom keywords, otherwise apply a fallback text string
     const keywords = keywordsRef.current?.value || "none provided";
 
-    // Engine Prompt Construction - Stripped of domains entirely
+    // Structuring a bulletproof prompt instructions manual for the AI engine
     const promptText = `
       You are BrandForge AI, an elite naming engineer. 
       Generate exactly 10 unique, clever, and creative brand names for a project based on these strict guidelines:
@@ -77,20 +88,22 @@ export default function App() {
     `;
 
     try {
+      // Calling the Gemini 2.5 Flash model and explicitly demanding a clean JSON reply
       const response = await ai.models.generateContent({
         model: "gemini-2.5-flash",
         contents: promptText,
         config: {
           responseMimeType: "application/json",
-          temperature: 0.8,
+          temperature: 0.8, // Slightly higher creative freedom setting for cooler branding ideas
         },
       });
 
       const rawText = response.text;
       const parsedNames = JSON.parse(rawText);
 
+      // Verify that Gemini actually sent back a proper array format as requested
       if (Array.isArray(parsedNames)) {
-        setGeneratedNames(parsedNames.slice(0, 10)); // Guarantee exactly 10 items
+        setGeneratedNames(parsedNames.slice(0, 10)); // Making sure we slice down precisely to 10 strings max
       } else {
         throw new Error("Invalid format returned by the Forge matrix.");
       }
@@ -100,10 +113,11 @@ export default function App() {
         "Failed to communicate with Gemini API. Double check your API key environment settings.",
       );
     } finally {
-      setIsGenerating(false);
+      setIsGenerating(false); // Shuts down the loading spinner layout state
     }
   };
 
+  // Quick conditional utility style variables to keep the layout rendering area tidy
   const isDark = theme === "dark";
   const themeBg = isDark
     ? "bg-[#050505] text-[#FAFAFA]"
@@ -132,6 +146,7 @@ export default function App() {
           </h1>
         </div>
 
+        {/* Global theme toggle switcher */}
         <button
           onClick={toggleTheme}
           className={`px-4 py-1.5 rounded-full border text-[10px] font-bold uppercase tracking-widest transition-all duration-300 ${
@@ -162,6 +177,7 @@ export default function App() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Dynamically rendering pill selectors for each parameter field array */}
             {["industry", "type", "style", "language"].map((field) => (
               <div key={field} className="flex flex-col gap-2">
                 <label
@@ -195,7 +211,7 @@ export default function App() {
               </div>
             ))}
 
-            {/* Core Keywords Input Box */}
+            {/* Core Optional Keywords Input Box */}
             <div className="flex flex-col gap-2 pt-2">
               <label
                 className={`text-[10px] uppercase tracking-widest font-black ${labelColor}`}
@@ -212,7 +228,7 @@ export default function App() {
               />
             </div>
 
-            {/* Action Trigger Button */}
+            {/* Main execution action trigger button */}
             <button
               type="submit"
               disabled={isGenerating}
@@ -227,24 +243,26 @@ export default function App() {
           </form>
         </section>
 
-        {/* RIGHT COLUMN: INTERACTIVE GENERATION AREA */}
+        {/* RIGHT PANEL COLUMN: GENERATION RESULTS OUTPUT TARGET */}
         <section
           className={`lg:col-span-7 p-6 lg:p-10 flex flex-col justify-between ${isDark ? "bg-[#0b0b0b]" : "bg-[#f5f5f5]"}`}
         >
-          {/* Top Info Notice */}
+          {/* Engine layout info bar status tracker */}
           <div className="flex justify-between items-start opacity-60 text-[11px] font-mono border-b pb-4 border-dashed border-neutral-500/20">
             <span>STATUS // {isGenerating ? "COMPUTING LABELS" : "READY"}</span>
             <span>ENGINE // GEMINI-2.5-FLASH</span>
           </div>
 
-          {/* Core Output Zone */}
+          {/* Core dynamic content window layout layer */}
           <div className="my-auto py-10">
+            {/* Renders error text alerts safely if something breaks or goes wrong */}
             {errorMessage && (
               <div className="mb-6 p-4 border-2 border-red-500/30 bg-red-500/5 text-red-400 text-xs font-mono">
                 [ERROR] // {errorMessage}
               </div>
             )}
 
+            {/* The animated layout loader block when waiting on the API call data */}
             {isGenerating && (
               <div className="flex flex-col gap-2 max-w-sm">
                 <div className="text-sm font-black animate-pulse tracking-widest uppercase">
@@ -269,6 +287,7 @@ export default function App() {
               </div>
             )}
 
+            {/* Empty default state display message if no names exist yet */}
             {!isGenerating && generatedNames.length === 0 && (
               <div className="max-w-md">
                 <h3 className="text-4xl lg:text-5xl font-black uppercase tracking-tighter opacity-15 select-none leading-none mb-4">
@@ -284,6 +303,7 @@ export default function App() {
               </div>
             )}
 
+            {/* Output Matrix layout renderer logic block */}
             {!isGenerating && generatedNames.length > 0 && (
               <div className="space-y-3">
                 <h3
@@ -312,6 +332,8 @@ export default function App() {
                         <span className="text-sm font-black tracking-tight font-mono">
                           {name}
                         </span>
+
+                        {/* Dynamic contextual interactive styling for the copy visual confirmation indicator */}
                         <span
                           className={`text-[9px] uppercase font-bold px-1.5 py-0.5 tracking-wider rounded transition-all duration-150 ${
                             isCopied
@@ -331,7 +353,7 @@ export default function App() {
             )}
           </div>
 
-          {/* Bottom Branding Marquee Element */}
+          {/* Footer design layout element section */}
           <div
             className={`pt-4 border-t border-dashed border-neutral-500/20 text-[10px] uppercase font-mono tracking-widest flex justify-between ${labelColor}`}
           >
