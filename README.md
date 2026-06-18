@@ -1,16 +1,33 @@
-# React + Vite
+# 🛠️ BrandForge // AI-Powered Identity Matrix
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Ever spent three consecutive nights staring at a blank document trying to name a project, only to end up naming it something generic? Yeah, we’ve been there. 
 
-Currently, two official plugins are available:
+**BrandForge** is a brutalist, ultra-modern identity naming machine designed to solve creative block instantly. Instead of relying on rigid random word mashups, it feeds your specific industry context, product media medium, formatting vibe, and seed keywords directly into the **Gemini 2.5 Flash** matrix to hammer out exactly 10 raw, curated naming ideas. No clutter, no domain extensions—just pure raw identity concepts.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## ✨ Features That Hit Different
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* **Asymmetric Split-Screen Layout:** Config parameters on the left, clean real-time forged output grid on the right.
+* **Zero Dropdown Fatigue:** Replaced boring select inputs with satisfying interactive pill badges. Tap an option, and the engine config shifts immediately.
+* **Direct Gemini Integration:** Utilizes the official `@google/genai` SDK to dynamically enforce clean structured JSON format responses.
+* **Pure Names (No Domains):** Gives you raw strings. No messy `.com`, `.io`, or web protocols attached unless you say so.
+* **Reactive Monochromatic Design:** Built for night owl coders. Switch fluidly between deep midnight charcoal tones (`#050505`) and crisp, stark gallery light modes (`#FAFAFA`).
+* **One-Tap Copy Flow:** Hover over any engineered layout card, click to instantly copy to your clipboard, and see visual confirmation tracking dynamically.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 The Tech Engine
+
+* **Frontend Ecosystem:** React + Hooks (`useState`, `useRef`, `useEffect`)
+* **Styling Engine:** Tailwind CSS (Featuring custom brutalist borders, monospace sub-layouts, and micro-animations)
+* **Artificial Intelligence:** `@google/genai` SDK (Powered via `gemini-2.5-flash`)
+
+---
+
+## 🛠️ Quick Start Checklist
+
+### 1. Grab the Project Clone
+```bash
+git clone [https://github.com/labsbyakash/brand-forge.git](https://github.com/labsbyakash/brand-forge.git)
+cd brand-forge
